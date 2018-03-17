@@ -1,7 +1,9 @@
 import unittest
-from cstats.cstats import ControlStats
-import pandas as pd
+
 import numpy as np
+import pandas as pd
+
+from forecast.cstats import ControlStats
 
 
 class ControlStatsTestCase(unittest.TestCase):

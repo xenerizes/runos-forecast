@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 
-from cstats.cstats import ControlStats
+import argparse
+import sys
+
 import matplotlib.pyplot as plt
 import pandas as pd
-import sys
-import argparse
+
+from forecast.cstats import ControlStats
 
 
 def plot(frame):

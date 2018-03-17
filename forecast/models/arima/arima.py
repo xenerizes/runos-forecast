@@ -1,8 +1,9 @@
-from models.model import Model
-from statsmodels.tsa.stattools import arma_order_select_ic
-from statsmodels.tsa.arima_model import ARIMA
 from pandas.tseries.offsets import Second
-from models.util import is_stationary
+from statsmodels.tsa.arima_model import ARIMA
+from statsmodels.tsa.stattools import arma_order_select_ic
+
+from ..base.model import Model
+from .util import is_stationary
 
 
 class ARIMAModel(Model):
