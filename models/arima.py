@@ -1,13 +1,8 @@
 from models.model import Model
 from statsmodels.tsa.stattools import arma_order_select_ic
-from statsmodels.tsa.stattools import adfuller
 from statsmodels.tsa.arima_model import ARIMA
 from pandas.tseries.offsets import Second
-
-
-def is_stationary(ts):
-    results = adfuller(ts, regression='ct')
-    return results[0] < results[4]['5%']
+from models.util import is_stationary
 
 
 class ARIMAModel(Model):
