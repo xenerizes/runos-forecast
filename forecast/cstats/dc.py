@@ -1,10 +1,7 @@
-import pandas as pd
-
-
 class DcStats(object):
     def __init__(self, frame):
-        self.frame = frame
         self.col_names = ['devname', 'infname', 'inbits', 'outbits']
+        self.frame = frame.filter(items=self.col_names, axis=1)
 
     def columns(self, names):
         cols = []
@@ -13,8 +10,13 @@ class DcStats(object):
                 cols.append(column)
         return cols
 
-    def locate(self, dev, inf):
-        pass
+    def dev_list(self):
+        filtered = self.frame.devname.drop_duplicates()
+        return filtered.reset_index().drop('time', axis=1).devname
 
     def summary(self):
-        pass
+        data = list()
+        for dev in self.dev_list():
+            dev_records = self.frame.loc[self.frame['devname'] == dev]
+            data.append(dev_records)
+        return data
