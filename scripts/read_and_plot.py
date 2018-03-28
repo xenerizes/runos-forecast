@@ -3,6 +3,8 @@
 import argparse
 import sys
 
+sys.path += '../' + sys.argv[0]
+
 import matplotlib.pyplot as plt
 import pandas as pd
 
