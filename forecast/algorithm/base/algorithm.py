@@ -1,11 +1,14 @@
+from . import Storage, TimeRange
+
 class BaseAlgorithm(object):
     def __init__(self):
-        self._history = None
+        self._history = Storage(None)
+        self._forecast = Storage(None)
         self._model = None
-        self._forecast = None
         self._interval = 0
+        self._time = 0
 
-    def predict(self):
+    def predict(self, interval):
         pass
 
     def select_model(self):
@@ -14,7 +17,7 @@ class BaseAlgorithm(object):
     def fit_model(self):
         pass
 
-    def notify(self):
+    def notify_controller(self):
         pass
 
     def needs_selection(self):
@@ -26,18 +29,19 @@ class BaseAlgorithm(object):
     def is_overload(self):
         pass
 
-    def step(self):
-        self.predict()
+    def step(self, time_range):
+        self._forecast[time_range] = self.predict(self._interval)
         if self.is_overload():
-            self.notify()
+            self.notify_controller()
 
     def run(self):
+        self._time = self._history.size()
         try:
-            while True:
-                if self.needs_selection():
-                    self.select_model()
-                if self.needs_fitting():
-                    self.fit_model()
-                self.step()
+            time_range = TimeRange(self._time, self._time + self._interval)
+            if self.needs_selection():
+                self.select_model()
+            if self.needs_fitting():
+                self.fit_model()
+            self.step(time_range)
         except KeyboardInterrupt:
             print('Interrupted')
