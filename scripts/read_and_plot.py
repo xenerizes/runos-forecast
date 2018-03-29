@@ -26,12 +26,12 @@ def add_subplots(datasets, time_visibility=False):
         sp.get_xaxis().set_visible(time_visibility)
 
 
-def plot_dc(frame):
+def plot_dc(frame, time_visibility=False):
     stats = DcStats(frame).summary()
     plt.subplots_adjust(left=0.05, bottom=0.1,
                         right=0.98, top=0.95,
                         hspace=0.5, wspace=0.5)
-    add_subplots(stats)
+    add_subplots(stats, time_visibility)
     plt.show(block=True)
 
 
