@@ -1,7 +1,11 @@
+import pandas as pd
+
+
 class DcStats(object):
     def __init__(self, frame):
         self.col_names = ['devname', 'infname', 'inbits', 'outbits']
         self.frame = frame.filter(items=self.col_names, axis=1)
+        self.frame.index = pd.to_datetime(self.frame.index)
 
     def columns(self, names):
         cols = []

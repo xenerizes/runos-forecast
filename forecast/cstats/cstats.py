@@ -5,6 +5,7 @@ class ControlStats(object):
     def __init__(self, frame):
         self.frame = frame
         self.col_postfix = ['rx', 'tx', 'pi']
+        self.frame.index = pd.to_datetime(self.frame.index)
 
     def sum_columns(self, columns):
         series = pd.Series(0, index=self.frame.index)
