@@ -3,23 +3,20 @@ import ml_metrics
 
 
 class Model(object):
-    def __init__(self):
-        self._dates = []
-        self._values = []
+    def __init__(self, ts):
+        self._ts = ts
         self._predict = 0
         self._period = None
         self._model = None
 
     def append(self, date, value):
-        self._dates.append(date)
-        self._values.append(value)
+        pass
 
     def drop(self):
-        self._dates = []
-        self._values = []
+        self._ts = pd.Series()
 
     def get_series(self):
-        return pd.Series(data=self._values, index=pd.to_datetime(self._dates))
+        return self._ts
 
     def get_fitted_values(self):
         pass
@@ -31,10 +28,10 @@ class Model(object):
         pass
 
     def min(self):
-        return min(self._values)
+        return self._ts.min()
 
     def max(self):
-        return max(self._values)
+        return self._ts.max()
 
     def mae(self):
         actual = self.get_series()

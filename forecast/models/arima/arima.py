@@ -7,8 +7,8 @@ from .util import is_stationary
 
 
 class ARIMAModel(Model):
-    def __init__(self):
-        Model.__init__(self)
+    def __init__(self, ts):
+        Model.__init__(self, ts)
         self._order = None
 
     def select_order_brute_force(self):
