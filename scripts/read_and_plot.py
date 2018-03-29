@@ -18,12 +18,28 @@ def shape(x):
     return int(ncols), int(nrows)
 
 
-def add_subplots(datasets):
+def add_subplots(datasets, time_visibility=False):
     ncols, nrows = shape(len(datasets))
     for idx, dataset in enumerate(datasets):
         sp = plt.subplot(nrows, ncols, idx + 1)
         dataset.plot(ax=sp, grid=True)
+        sp.get_xaxis().set_visible(time_visibility)
 
+
+def plot_dc(frame):
+    stats = DcStats(frame).summary()
+    plt.subplots_adjust(left=0.05, bottom=0.1,
+                        right=0.98, top=0.95,
+                        hspace=0.5, wspace=0.5)
+    add_subplots(stats)
+    plt.show(block=True)
+
+
+def plot_runos(frame):
+    stats = ControlStats(frame)
+    aggregated = stats.aggregate()
+    aggregated.diff().plot(grid=True)
+    plt.show(block=True)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -37,11 +53,6 @@ if __name__ == '__main__':
 
     frame = pd.read_csv(opts.file, index_col=[0])
     if opts.dc:
-        stats = DcStats(frame).summary()
-        add_subplots(stats)
+        plot_dc(frame)
     else:
-        stats = ControlStats(frame)
-        aggregated = stats.aggregate()
-        aggregated.diff().plot(grid=True)
-
-    plt.show(block=True)
+        plot_runos(frame)
