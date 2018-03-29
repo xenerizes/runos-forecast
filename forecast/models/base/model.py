@@ -15,9 +15,6 @@ class Model(object):
     def drop(self):
         self._ts = pd.Series()
 
-    def get_series(self):
-        return self._ts
-
     def get_fitted_values(self):
         pass
 
@@ -34,11 +31,9 @@ class Model(object):
         return self._ts.max()
 
     def mae(self):
-        actual = self.get_series()
         fitted = self.get_fitted_values()
-        return ml_metrics.mae(actual, fitted)
+        return ml_metrics.mae(self._ts, fitted)
 
     def rmse(self):
-        actual = self.get_series()
         fitted = self.get_fitted_values()
-        return ml_metrics.rmse(actual, fitted)
+        return ml_metrics.rmse(self._ts, fitted)

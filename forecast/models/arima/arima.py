@@ -17,24 +17,22 @@ class ARIMAModel(Model):
             fit = ARIMA(endog, order, exog).fit(full_output=False)
             return fit.aic
 
-        ts = self.get_series()
-        bic = arma_order_select_ic(ts).bic_min_order
+        bic = arma_order_select_ic(self._ts).bic_min_order
         grid = (slice(bic[0], bic[0] + 1, 1), slice(1, 2, 1), slice(bic[1], bic[1] + 1, 1))
         from scipy.optimize import brute
-        return brute(objfunc, grid, args=(ts, None), finish=None)
+        return brute(objfunc, grid, args=(self._ts, None), finish=None)
 
     def select_order(self):
-        ts = self.get_series()
-        if is_stationary(ts):
-            bic = arma_order_select_ic(ts).bic_min_order
+        if is_stationary(self._ts):
+            bic = arma_order_select_ic(self._ts).bic_min_order
             return bic[0], 0, bic[1]
 
-        ts1diff = ts.diff(periods=1).dropna()
+        ts1diff = self._ts.diff(periods=1).dropna()
         if is_stationary(ts1diff):
             bic = arma_order_select_ic(ts1diff).bic_min_order
             return bic[0], 1, bic[1]
 
-        ts2diff = ts.diff(periods=2).dropna()
+        ts2diff = self._ts.diff(periods=2).dropna()
         bic = arma_order_select_ic(ts2diff).bic_min_order
 
         return bic[0], 2, bic[1]
@@ -43,11 +41,10 @@ class ARIMAModel(Model):
         return self._model.fittedvalues
 
     def auto(self):
-        ts = self.get_series()
-        self._period = ts.index[1] - ts.index[0]
+        self._period = self._ts.index[1] - self._ts.index[0]
         freq = Second(self._period.total_seconds())
         self._order = self.select_order()
-        self._model = ARIMA(self.get_series(), order=self._order, freq=freq).fit()
+        self._model = ARIMA(self._ts, order=self._order, freq=freq).fit()
 
     def predict(self):
         start_date = self._model.fittedvalues.index[-1]
