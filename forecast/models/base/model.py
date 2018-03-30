@@ -18,7 +18,7 @@ class Model(object):
     def get_fitted_values(self):
         pass
 
-    def auto(self):
+    def auto(self, order=None):
         pass
 
     def predict(self):
