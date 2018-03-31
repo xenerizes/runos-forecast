@@ -1,10 +1,11 @@
 import pandas as pd
+import numpy as np
 import ml_metrics
 
 
 class Model(object):
     def __init__(self, ts):
-        self._ts = ts
+        self._ts = pd.Series(ts.values, index=ts.index, dtype=np.float64)
         self._predict = 0
         self._period = None
         self._model = None
