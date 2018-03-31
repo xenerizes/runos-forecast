@@ -17,7 +17,7 @@ class Model(object):
         self._ts = pd.Series()
 
     def get_fitted_values(self):
-        pass
+        return self._model.fittedvalues()
 
     def auto(self, order=None):
         pass

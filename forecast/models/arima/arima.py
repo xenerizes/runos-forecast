@@ -38,9 +38,6 @@ class ARIMAModel(Model):
 
         return bic[0], 2, bic[1]
 
-    def get_fitted_values(self):
-        return self._model.fittedvalues
-
     def auto(self, order=None):
         self._period = self._ts.index[1] - self._ts.index[0]
         freq = Second(self._period.total_seconds())
