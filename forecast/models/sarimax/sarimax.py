@@ -11,6 +11,3 @@ class SARIMAXModel(ARIMAModel):
                               seasonal_order=seasonal_order,
                               enforce_stationarity=False,
                               enforce_invertibility=False).fit(start_params)
-
-    def simulate(self, n):
-        return self._model.simulate(n)

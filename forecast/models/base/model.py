@@ -1,6 +1,5 @@
 import pandas as pd
 import numpy as np
-import ml_metrics
 
 
 class Model(object):
@@ -29,11 +28,3 @@ class Model(object):
 
     def max(self):
         return self._ts.max()
-
-    def mae(self):
-        fitted = self.get_fitted_values()
-        return ml_metrics.mae(self._ts, fitted)
-
-    def rmse(self):
-        fitted = self.get_fitted_values()
-        return ml_metrics.rmse(self._ts, fitted)
