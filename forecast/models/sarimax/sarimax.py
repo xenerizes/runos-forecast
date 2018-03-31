@@ -1,4 +1,3 @@
-from pandas.tseries.offsets import Second
 from statsmodels.tsa.statespace.sarimax import SARIMAX
 
 from ..arima import ARIMAModel
@@ -10,8 +9,7 @@ class SARIMAXModel(ARIMAModel):
 
     def auto(self, order=None):
         self._period = self._ts.index[1] - self._ts.index[0]
-        freq = Second(self._period.total_seconds())
         self._order = order if order is not None else self.select_order()
-        self._model = SARIMAX(self._ts, order=self._order, freq=freq).fit()
+        self._model = SARIMAX(self._ts, order=self._order).fit()
 
 
