@@ -41,9 +41,9 @@ class ARIMAModel(Model):
         self._order = order if order is not None else self.select_order()
         self._model = ARIMA(self._ts, order=self._order).fit()
 
-    def predict(self):
+    def predict(self, length):
         start_date = self._model.fittedvalues.index[-1]
-        end_date = start_date + self._predict * self._period
+        end_date = start_date + length * self._period
         forecast = self._model.predict(start_date.isoformat(), end_date.isoformat())
 
         if self._order[1] > 0:

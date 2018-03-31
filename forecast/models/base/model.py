@@ -6,7 +6,6 @@ import ml_metrics
 class Model(object):
     def __init__(self, ts):
         self._ts = pd.Series(ts.values, index=ts.index, dtype=np.float64)
-        self._predict = 0
         self._period = None
         self._model = None
 
@@ -22,7 +21,7 @@ class Model(object):
     def auto(self, order=None):
         pass
 
-    def predict(self):
+    def predict(self, length):
         pass
 
     def min(self):
