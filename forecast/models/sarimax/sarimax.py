@@ -11,3 +11,6 @@ class SARIMAXModel(ARIMAModel):
                               seasonal_order=seasonal_order,
                               enforce_stationarity=False,
                               enforce_invertibility=False).fit(start_params)
+
+    def predict(self, length):
+        return self._model.forecast(length)
