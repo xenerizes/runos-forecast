@@ -6,6 +6,10 @@ from .util import is_stationary
 
 
 class ARIMAModel(Model):
+    def __init__(self, ts):
+        Model.__init__(self, ts)
+        self._order = None
+
     def select_order_brute_force(self):
         def objfunc(order, endog, exog):
             from statsmodels.tsa.arima_model import ARIMA
@@ -34,17 +38,16 @@ class ARIMAModel(Model):
 
     def auto(self, order=None):
         self._period = self._ts.index[1] - self._ts.index[0]
-        order = order if order is not None else self.select_order()
-        self._model = ARIMA(self._ts, order=order).fit()
+        self._order = order if order is not None else self.select_order()
+        self._model = ARIMA(self._ts, order=self._order).fit()
 
     def predict(self, length):
         start_date = self._model.fittedvalues.index[-1]
         end_date = start_date + length * self._period
         forecast = self._model.predict(start_date.isoformat(), end_date.isoformat())
 
-        if self._model.order[1] > 0:
+        if self._order[1] > 0:
             shift = self.max() - self.min()
             forecast += shift
 
         return forecast
-
