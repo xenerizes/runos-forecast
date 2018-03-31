@@ -1,5 +1,6 @@
 from . import Storage, TimeRange
 
+
 class BaseAlgorithm(object):
     def __init__(self):
         self._history = Storage(None)
