@@ -35,7 +35,7 @@ class DcStats(object):
         data = list()
         for inf in self.inf_list():
             inf_records = self.frame.loc[self.frame['infname'] == inf]
-            new_index = pd.date_range(start='2007-10-19 20:00', periods=len(inf_records), freq='H')
+            new_index = pd.date_range(start='2007-10-19 20:00', periods=len(inf_records), freq='15T')
             inf_records.index = new_index
             data.append(inf_records)
         return data
