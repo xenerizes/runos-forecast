@@ -13,4 +13,7 @@ class SARIMAXModel(ARIMAModel):
                               enforce_invertibility=False).fit(start_params)
 
     def predict(self, length):
-        return self._model.forecast(length)
+        start_date = self._model.fittedvalues.index[-1]
+        end_date = start_date + length * self._period
+        forecast = self._model.predict(start_date.isoformat(), end_date.isoformat())
+        return forecast
