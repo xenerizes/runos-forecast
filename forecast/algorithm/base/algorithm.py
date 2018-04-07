@@ -23,10 +23,10 @@ class BaseAlgorithm(object):
         pass
 
     def needs_selection(self):
-        pass
+        return True
 
     def needs_fitting(self):
-        pass
+        return True
 
     def is_overload(self):
         pass
