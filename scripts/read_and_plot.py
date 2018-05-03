@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import argparse
+from .util import parse
 import sys
 import math
 
@@ -44,14 +44,7 @@ def plot_runos(frame):
     plt.show(block=True)
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        'file', type=str, help='CSV input'
-    )
-    parser.add_argument(
-        '--dc', action='store_true', help='Specify if input is not Runos'
-    )
-    opts = parser.parse_args(sys.argv[1:])
+    opts = parse()
 
     frame = pd.read_csv(opts.file, index_col=[0])
     if opts.dc:
