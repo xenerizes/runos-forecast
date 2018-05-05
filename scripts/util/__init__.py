@@ -1,1 +1,1 @@
-from .argument_parser import parse
+from .argument_parser import parse, make_parser

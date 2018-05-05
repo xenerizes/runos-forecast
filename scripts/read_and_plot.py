@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from .util import parse
+from .util import make_parser
 import sys
 import math
 
@@ -43,7 +43,8 @@ def plot_runos(frame):
     plt.show(block=True)
 
 if __name__ == '__main__':
-    opts = parse()
+    parser = make_parser()
+    opts = parser.parse_args(sys.argv[1:])
 
     frame = pd.read_csv(opts.file, index_col=[0])
     if opts.dc:
