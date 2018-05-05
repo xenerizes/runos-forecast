@@ -8,8 +8,7 @@ sys.path += '../' + sys.argv[0]
 
 import matplotlib.pyplot as plt
 import pandas as pd
-
-from forecast.cstats import ControlStats, DcStats
+from forecast.loader import ControlStats, DcStats
 
 
 def shape(x):
@@ -39,7 +38,7 @@ def plot_dc(frame, time_visibility=False, type=0):
 
 def plot_runos(frame):
     stats = ControlStats(frame)
-    aggregated = stats.aggregate()
+    aggregated = stats.to_data_frame()
     aggregated.diff().plot(grid=True)
     plt.show(block=True)
 
