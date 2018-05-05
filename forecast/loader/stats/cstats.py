@@ -7,8 +7,6 @@ class ControlStats(StatsStorage):
         self.frame = frame
         self.col_postfix = ['rx', 'tx', 'pi']
         self.frame.index = pd.to_datetime(self.frame.index)
-        storage = self.form_storage()
-        StatsStorage.__init__(self, storage)
 
     def sum_columns(self, columns):
         series = pd.Series(0, index=self.frame.index)
@@ -34,5 +32,5 @@ class ControlStats(StatsStorage):
     def to_data_frame(self):
         return pd.DataFrame(self.aggregate(), index=self.frame.index)
 
-    def form_storage(self):
-        return StatsStorage(self.aggregate())
+    def to_frame_list(self):
+        return self.aggregate()
