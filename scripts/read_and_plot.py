@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from .util import make_parser
+from scripts.util import make_parser
 import sys
 import math
 
