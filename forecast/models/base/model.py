@@ -4,18 +4,18 @@ import numpy as np
 
 class Model(object):
     def __init__(self, ts):
-        self._ts = pd.Series(ts.values, index=ts.index, dtype=np.float64)
-        self._period = None
-        self._model = None
+        self.ts = pd.Series(ts.values, index=ts.index, dtype=np.float64)
+        self.period = None
+        self.model = None
 
     def append(self, date, value):
         pass
 
     def drop(self):
-        self._ts = pd.Series()
+        self.ts = pd.Series()
 
     def get_fitted_values(self):
-        return self._model.fittedvalues
+        return self.model.fittedvalues
 
     def auto(self, order=None):
         pass
@@ -24,7 +24,7 @@ class Model(object):
         pass
 
     def min(self):
-        return self._ts.min()
+        return self.ts.min()
 
     def max(self):
-        return self._ts.max()
+        return self.ts.max()

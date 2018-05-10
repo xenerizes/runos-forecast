@@ -1,6 +1,6 @@
 class Storage(object):
     def __init__(self, data):
-        self._data = data
+        self.data = data
 
-    def get(self, time_range):
+    def get(self, since, to):
         pass
