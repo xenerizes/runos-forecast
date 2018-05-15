@@ -2,13 +2,15 @@ from pandas import Series
 
 
 class BaseAlgorithm(object):
-    def __init__(self, storage, interval, history_len):
-        self.storage = storage
+    def __init__(self, data, interval, history_len):
+        self.data = data
         self.forecast = Series()
         self.model = None
         self.interval = interval
         self.history_len = history_len
-        self.history = None
+        self.history = data.head(history_len)
+        self.start = 0
+        self.end = self.history_len
 
     def predict(self, interval):
         return self.model.predict(interval)
@@ -36,10 +38,14 @@ class BaseAlgorithm(object):
         if self.is_overload():
             self.notify_controller()
 
-    def run(self, start_time):
-        time = start_time
+    def next(self):
+        return 0, 0
+
+    def run(self):
         try:
-            self.history = self.storage.get(time - self.history_len, time)
+            self.history = self.data.iloc(self.start, self.end)
+            if self.history.empty:
+                return 
             if self.needs_selection():
                 self.select_model()
             if self.needs_fitting():

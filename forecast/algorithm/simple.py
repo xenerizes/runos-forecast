@@ -3,8 +3,8 @@ from ..models.arima import ARIMAModel
 
 
 class SimpleAlgorithm(BaseAlgorithm):
-    def __init__(self, storage, interval, history_len):
-        BaseAlgorithm.__init__(self, storage, interval, history_len)
+    def __init__(self, data, interval, history_len):
+        BaseAlgorithm.__init__(self, data, interval, history_len)
 
     def select_model(self):
         self.model = ARIMAModel(self.history)
