@@ -28,7 +28,7 @@ class SARIMAXModel(Model):
         self.model = SARIMAX(self.ts, order=self.order,
                              seasonal_order=self.seasonal_order,
                              enforce_stationarity=False,
-                             enforce_invertibility=False).fit(start_params)
+                             enforce_invertibility=False).fit(start_params, disp=False)
 
     def predict(self, length):
         start_date = self.model.fittedvalues.index[-1]

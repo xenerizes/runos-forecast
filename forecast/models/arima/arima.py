@@ -39,7 +39,7 @@ class ARIMAModel(Model):
     def auto(self, order=None):
         self.period = self.ts.index[1] - self.ts.index[0]
         self.order = order if order is not None else self.select_order()
-        self.model = ARIMA(self.ts, order=self.order).fit()
+        self.model = ARIMA(self.ts, order=self.order).fit(disp=False)
 
     def predict(self, length):
         start_date = self.model.fittedvalues.index[-1]
