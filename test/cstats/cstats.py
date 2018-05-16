@@ -3,7 +3,7 @@ import unittest
 import numpy as np
 import pandas as pd
 
-from forecast.cstats import ControlStats
+from forecast.loader import ControlStats
 
 
 class ControlStatsTestCase(unittest.TestCase):
@@ -32,5 +32,5 @@ class ControlStatsTestCase(unittest.TestCase):
         sum_pi = self.cstats.frame['1pi'] + self.cstats.frame['2pi']
         sum_dict = {'rx': sum_rx, 'tx': sum_tx, 'pi': sum_pi}
         manual = pd.DataFrame(sum_dict, index=self.cstats.frame.index)
-        aggregated = self.cstats.aggregate()
+        aggregated = self.cstats.to_data_frame()
         self.assertTrue(manual.equals(aggregated))
