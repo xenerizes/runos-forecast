@@ -7,6 +7,8 @@ class DcStats(StatsStorage):
         self.col_names = ['devname', 'infname', 'inbits', 'outbits']
         self.frame = frame.filter(items=self.col_names, axis=1)
         self.frame.index = pd.to_datetime(self.frame.index)
+        self.frame.inbits = self.frame.inbits.astype('float64')
+        self.frame.outbits = self.frame.outbits.astype('float64')
 
     def columns(self, names):
         cols = []
