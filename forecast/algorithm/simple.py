@@ -11,3 +11,9 @@ class SimpleAlgorithm(BaseAlgorithm):
 
     def fit_model(self):
         self.model.auto()
+
+    def next(self):
+        if self.data.size - self.interval < self.end:
+            self.start, self.end = 0, 0
+        else:
+            self.start, self.end = self.start + self.interval, self.end + self.interval
