@@ -1,4 +1,5 @@
 from pandas import Series
+from ..summary import ExecutionSummary
 
 
 class BaseAlgorithm(object):
@@ -8,7 +9,7 @@ class BaseAlgorithm(object):
         self.model = None
         self.interval = interval
         self.history_len = history_len
-        self.history = data.head(history_len)
+        self.history = None
         self.start = 0
         self.end = self.history_len
 
@@ -34,22 +35,25 @@ class BaseAlgorithm(object):
         pass
 
     def step(self):
-        self.forecast += self.predict(self.interval)
+        predicted = self.predict(self.interval)
+        self.forecast = self.forecast.append(predicted)
         if self.is_overload():
             self.notify_controller()
 
     def next(self):
-        return 0, 0
+        pass
 
     def run(self):
-        try:
-            self.history = self.data.iloc(self.start, self.end)
-            if self.history.empty:
-                return 
-            if self.needs_selection():
-                self.select_model()
-            if self.needs_fitting():
-                self.fit_model()
-            self.step()
-        except KeyboardInterrupt:
-            print('Interrupted')
+        while self.start != self.end:
+            try:
+                self.history = self.data.iloc[self.start:self.end]
+                if self.history.empty:
+                    return
+                if self.needs_selection():
+                    self.select_model()
+                if self.needs_fitting():
+                    self.fit_model()
+                self.step()
+                self.next()
+            except KeyboardInterrupt:
+                print('Interrupted')
