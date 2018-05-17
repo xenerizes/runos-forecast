@@ -1,4 +1,5 @@
 import ml_metrics
+import pandas as pd
 
 
 class ForecastQuality(object):
@@ -10,8 +11,6 @@ class ForecastQuality(object):
         self.mse = ml_metrics.mse(self.actual, self.fit)
 
     def summary(self):
-        return {
-            'Mean Absolute Error': self.mae,
-            'Mean Squared Error': self.mse,
-            'Root Mean Squared Error': self.rmse
-        }
+        data = [self.mae, self.mse, self.rmse]
+        index = ['Mean Absolute Error', 'Mean Squared Error', 'Root Mean Squared Error']
+        return pd.Series(data, index=index)
