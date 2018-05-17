@@ -1,5 +1,6 @@
 from pandas import Series
 from ..summary import ExecutionSummary
+from IPython.display import display
 
 
 class BaseAlgorithm(object):
@@ -45,11 +46,8 @@ class BaseAlgorithm(object):
 
     def print_summary(self):
         summary = ExecutionSummary(self.data, self.forecast)
-        overloads = summary.overloads(600, 5)
-        false_positives = summary.false_positives(600, 5)
-        print(summary.quality())
-        print("Overloads: {}".format(overloads))
-        print("FP: {}".format(false_positives))
+        display(summary.quality())
+        display(summary.detection_summary())
 
     def run(self):
         while self.start != self.end:

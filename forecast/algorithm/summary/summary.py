@@ -1,4 +1,9 @@
 from forecast.models.base.quality import ForecastQuality
+import pandas as pd
+
+
+OVERLOAD_SIZES = [0.75, 0.8, 0.85, 0.9, 0.95]
+INTERVALS = [2, 3, 5]
 
 
 class ExecutionSummary(object):
@@ -8,13 +13,30 @@ class ExecutionSummary(object):
         self.cut()
 
     def quality(self):
-        return ForecastQuality(self.actual, self.predicted).summary()
+        result = ForecastQuality(self.actual, self.predicted).summary()
+        return result.to_frame("Value")
 
     def cut(self):
         common_start = max(self.actual.index[0], self.predicted.index[0])
         common_end = min(self.actual.index[-1], self.predicted.index[-1])
-        self.actual = self.actual[common_start:common_end].bfill()
-        self.predicted = self.predicted[common_start:common_end].bfill()
+        self.actual = self.actual[common_start:common_end]
+        self.predicted = self.predicted[common_start:common_end]
+
+    def detection_summary(self):
+        qdiff = self.actual.quantile(0.95) - self.actual.quantile(0.05)
+
+        overloads = []
+        fps = []
+        index = []
+        for size in OVERLOAD_SIZES:
+            for interval in INTERVALS:
+                overloads.append(self.overloads(qdiff * size, interval))
+                fps.append(self.false_positives(qdiff * size, interval))
+                index.append((size, interval))
+
+        data = { "TP": overloads, "FP": fps }
+        index = pd.MultiIndex.from_tuples(index, names=['size', 'interval'])
+        return pd.DataFrame(data, index=index)
 
     def overloads(self, board, interval):
         overloads = 0
@@ -47,7 +69,6 @@ class ExecutionSummary(object):
             if self.actual[point - point.freq] < board:
                 overloads += 1
 
-        print("last elem is: ", self.predicted.index[-1])
         for point in self.predicted.index:
             if self.predicted[point] < board:
                 continue
