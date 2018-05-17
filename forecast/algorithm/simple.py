@@ -16,4 +16,5 @@ class SimpleAlgorithm(BaseAlgorithm):
         if self.data.size - self.interval < self.end:
             self.start, self.end = 0, 0
         else:
-            self.start, self.end = self.start + self.interval, self.end + self.interval
+            interval = self.interval + 1
+            self.start, self.end = self.start + interval, self.end + interval
