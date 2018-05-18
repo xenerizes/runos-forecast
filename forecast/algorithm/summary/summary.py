@@ -24,8 +24,7 @@ class ExecutionSummary(object):
         index = []
         for size in OVERLOAD_BOUNDS:
             for interval in INTERVALS:
-                bound = size * self.qdiff
-                detected, fp, total = self.overloads(bound, interval)
+                detected, fp, total = self.overloads(size, interval)
                 overloads.append(detected)
                 fps.append(fp)
                 totals.append(total)
@@ -40,18 +39,19 @@ class ExecutionSummary(object):
 
         return DataFrame(data, index=index)
 
-    def overloads(self, bound, interval):
-        overloads = self.actual.overloads(bound)
-        predicted = self.predicted.overloads(bound)
-        detected = []
-        for overload in overloads:
-            observe = self.predicted.quality_interval(overload, interval)
-            if len(observe.overloads(bound)) > 0:
-                detected.append(overload)
+    def overloads(self, size, interval):
+        bound = size * self.qdiff
+        true_overloads = self.actual.overloads(bound)
+        predicted_overloads = self.predicted.overloads(bound)
+        detected_overloads = []
+        for overload in true_overloads:
+            quality_interval = self.predicted.quality_interval(overload, interval)
+            if len(quality_interval.overloads(bound)) > 0:
+                detected_overloads.append(overload)
 
-        tp_count = len(detected)
-        fp_count = len(predicted) - len(detected)
-        overload_count = len(overloads)
+        tp_count = len(detected_overloads)
+        fp_count = len(predicted_overloads) - len(detected_overloads)
+        overload_count = len(true_overloads) + fp_count
 
         if overload_count == 0:
             return 0, 0, 0

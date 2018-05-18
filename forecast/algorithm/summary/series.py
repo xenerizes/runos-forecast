@@ -15,7 +15,7 @@ class TimeSeries(object):
 
     def is_overload(self, point, bound):
         if self.data.index[0] == point:
-            return bound >= self.data[point]
+            return False
 
         previous = point - point.freq
         return self.data[previous] < bound <= self.data[point]
@@ -24,7 +24,7 @@ class TimeSeries(object):
         return [point for point in self.data.index if self.is_overload(point, bound)]
 
     def quality_interval(self, point, interval):
-        start_time = (point - 2 * interval)
+        start_time = (point - 2 * interval - point.freq)
         end_time = (point + 2 * interval)
         start_time, end_time = convert_time(start_time, end_time)
         data = self.data.between_time(start_time, end_time)
