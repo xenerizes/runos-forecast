@@ -1,7 +1,9 @@
 from argparse import ArgumentParser
+from pandas import read_csv
+from sys import argv
+
 from forecast.loader import ControlStats, DcStats
-import pandas as pd
-import sys
+
 
 def make_parser():
     parser = ArgumentParser()
@@ -16,9 +18,9 @@ def make_parser():
 
 def parse():
     parser = make_parser()
-    opts = parser.parse_args(sys.argv[1:])
+    opts = parser.parse_args(argv[1:])
 
-    frame = pd.read_csv(opts.file, index_col=[0])
+    frame = read_csv(opts.file, index_col=[0])
     if opts.dc:
         return DcStats(frame)
     else:

@@ -1,6 +1,7 @@
 from pandas import Series
-from ..summary import ExecutionSummary
 from IPython.display import display
+
+from ..summary import ExecutionSummary
 
 
 class BaseAlgorithm(object):

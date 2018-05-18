@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 
 import sys
-from argparse import ArgumentParser
 import requests
 from time import sleep
 from datetime import datetime
+from argparse import ArgumentParser
 
 
 def make_parser():

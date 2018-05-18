@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 
-from scripts.util import make_parser
 import sys
 import math
+
+from scripts.util import make_parser
 
 sys.path += '../' + sys.argv[0]
 

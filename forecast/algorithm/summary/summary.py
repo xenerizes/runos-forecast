@@ -1,7 +1,9 @@
 from pandas import DataFrame, MultiIndex
+
+from forecast.models.base.quality import ForecastQuality
+
 from .series import TimeSeries
 from .util import cut
-from forecast.models.base.quality import ForecastQuality
 
 OVERLOAD_BOUNDS = [0.8, 0.85, 0.9, 0.95]
 INTERVALS = [2, 3, 5]

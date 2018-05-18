@@ -1,10 +1,10 @@
-import pandas as pd
-import numpy as np
+from pandas import Series
+from numpy import float64
 
 
 class Model(object):
     def __init__(self, ts):
-        self.ts = pd.Series(ts.values, index=ts.index, dtype=np.float64)
+        self.ts = Series(ts.values, index=ts.index, dtype=float64)
         self.period = None
         self.model = None
 
@@ -12,7 +12,7 @@ class Model(object):
         pass
 
     def drop(self):
-        self.ts = pd.Series()
+        self.ts = Series()
 
     def get_fitted_values(self):
         return self.model.fittedvalues
