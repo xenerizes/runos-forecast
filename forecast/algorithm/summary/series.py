@@ -13,17 +13,15 @@ class TimeSeries(object):
         self.data = data
         self.qdiff = data.quantile(HIGHER_QUANTILE) - data.quantile(LOWER_QUANTILE)
 
-    def is_overload(self, point, size):
-        board = self.qdiff * size
+    def is_overload(self, point, bound):
         if self.data.index[0] == point:
-            return board >= self.data[point]
+            return bound >= self.data[point]
 
         previous = point - point.freq
-        return self.data[previous] < board <= self.data[point]
+        return self.data[previous] < bound <= self.data[point]
 
-    def overloads(self, size):
-        board = self.qdiff * size
-        return [point for point in self.data.index if self.is_overload(point, board)]
+    def overloads(self, bound):
+        return [point for point in self.data.index if self.is_overload(point, bound)]
 
     def quality_interval(self, point, interval):
         start_time = (point - 2 * interval)

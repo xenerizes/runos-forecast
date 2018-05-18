@@ -3,7 +3,7 @@ from .series import TimeSeries
 from .util import cut
 from forecast.models.base.quality import ForecastQuality
 
-OVERLOAD_BOUNDS = [0.75, 0.8, 0.85, 0.9, 0.95]
+OVERLOAD_BOUNDS = [0.8, 0.85, 0.9, 0.95]
 INTERVALS = [2, 3, 5]
 
 
@@ -11,6 +11,7 @@ class ExecutionSummary(object):
     def __init__(self, actual, predicted):
         actual, predicted = cut(actual, predicted)
         self.actual, self.predicted = tuple(TimeSeries(data) for data in [actual, predicted])
+        self.qdiff = self.actual.qdiff
 
     def quality(self):
         result = ForecastQuality(self.actual.data, self.predicted.data).summary()
@@ -23,7 +24,8 @@ class ExecutionSummary(object):
         index = []
         for size in OVERLOAD_BOUNDS:
             for interval in INTERVALS:
-                detected, fp, total = self.overloads(size, interval)
+                bound = size * self.qdiff
+                detected, fp, total = self.overloads(bound, interval)
                 overloads.append(detected)
                 fps.append(fp)
                 totals.append(total)
@@ -38,13 +40,13 @@ class ExecutionSummary(object):
 
         return DataFrame(data, index=index)
 
-    def overloads(self, size, interval):
-        overloads = self.actual.overloads(size)
-        predicted = self.predicted.overloads(size)
+    def overloads(self, bound, interval):
+        overloads = self.actual.overloads(bound)
+        predicted = self.predicted.overloads(bound)
         detected = []
         for overload in overloads:
             observe = self.predicted.quality_interval(overload, interval)
-            if len(observe.overloads(size)) > 0:
+            if len(observe.overloads(bound)) > 0:
                 detected.append(overload)
 
         tp_count = len(detected)
