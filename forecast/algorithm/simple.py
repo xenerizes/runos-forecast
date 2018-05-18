@@ -1,13 +1,13 @@
 from .base import BaseAlgorithm
-from ..models.arima import ARIMAModel
 
 
 class SimpleAlgorithm(BaseAlgorithm):
-    def __init__(self, data, interval, history_len):
+    def __init__(self, model_class, data, interval, history_len):
         BaseAlgorithm.__init__(self, data, interval, history_len)
+        self.model_class = model_class
 
     def select_model(self):
-        self.model = ARIMAModel(self.history)
+        self.model = self.model_class(self.history)
 
     def fit_model(self):
         self.model.auto()
