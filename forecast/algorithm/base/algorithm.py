@@ -5,10 +5,11 @@ from ..summary import ExecutionSummary
 
 
 class BaseAlgorithm(object):
-    def __init__(self, data, interval, history_len):
+    def __init__(self, klass, data, interval, history_len):
         self.data = data
         self.forecast = Series()
         self.model = None
+        self.model_class = klass
         self.interval = interval
         self.history_len = history_len
         self.history = None
