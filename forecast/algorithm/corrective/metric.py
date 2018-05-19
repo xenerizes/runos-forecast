@@ -13,7 +13,7 @@ class Metric(object):
 
     def diff(self):
         if len(self.values) == 0:
-            return 0
+            return self.k + 1
         return max(self.values) / min(self.values)
 
     def is_bad(self):
