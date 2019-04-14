@@ -47,7 +47,7 @@ class ARIMAModel(Model):
         forecast = self.model.predict(start_date.isoformat(), end_date.isoformat())
 
         if self.order[1] > 0:
-            shift = self.max() - self.min()
+            shift = abs(self.model.fittedvalues[-1] - self.ts[-1])
             forecast += shift
 
         return forecast
