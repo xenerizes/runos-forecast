@@ -4,15 +4,15 @@ import numpy as np
 
 
 def mape(actual, predicted):
-    return np.mean(ae(actual, predicted)/actual)
+    return 100 * np.mean(ae(actual, predicted)/actual)
 
 
 class ForecastQuality(object):
     def __init__(self, actual, fit):
         self.actual = actual
         self.fit = fit
-        self.mse = mse(self.actual, self.fit)
-        self.mape = mape(self.actual, self.fit)
+        self.mse = '{:.1f}'.format(mse(self.actual, self.fit))
+        self.mape = '{:.3f}%'.format(mape(self.actual, self.fit))
 
     def summary(self):
         data = [self.mse, self.mape]
