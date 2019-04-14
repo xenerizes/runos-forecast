@@ -5,6 +5,21 @@ from ..storage import StatsStorage
 
 class DcStats(StatsStorage):
     def __init__(self, frame):
+        self.frame = frame
+        self.col_names = ['inbits', 'outbits']
+
+    def to_frame_list(self):
+        pass
+
+    def switch_load(self):
+        return {1: self.frame['inbits'], 2: self.frame['outbits']}
+
+    def load(self):
+        return self.frame['inbits'] + self.frame['outbits']
+
+
+class DcStatsHelper(object):
+    def __init__(self, frame):
         self.col_names = ['devname', 'infname', 'inbits', 'outbits']
         self.frame = frame.filter(items=self.col_names, axis=1)
         self.frame.index = pd.to_datetime(self.frame.index)
