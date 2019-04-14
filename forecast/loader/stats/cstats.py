@@ -1,6 +1,10 @@
 import pandas as pd
-from functools import reduce
+import numpy as np
 from ..storage import StatsStorage
+
+
+def _guess_seconds(index):
+    return np.min(index[1:] - index[:-1]).seconds
 
 
 class ControlStats(StatsStorage):
@@ -8,6 +12,9 @@ class ControlStats(StatsStorage):
         self.frame = frame
         self.col_postfix = ['rx', 'tx', 'pi']
         self.frame.index = pd.to_datetime(self.frame.index)
+        self.frame.index = pd.date_range(start=frame.index[0],
+                                         periods=len(frame),
+                                         freq='{}S'.format(_guess_seconds(self.frame.index)))
 
     def sum_columns(self, columns):
         series = pd.Series(0, index=self.frame.index)
@@ -36,7 +43,7 @@ class ControlStats(StatsStorage):
         return self.aggregate()
 
     def switch_load(self):
-        return {int(column[:-2]): self.frame[column] for column in self.columns('pi')}
+        return {int(column[:-2]): self.frame[column].astype('float64') for column in self.columns('pi')}
 
     def load(self):
-        return self.aggregate()['rx']
+        return self.aggregate()['rx'].astype('float64')
