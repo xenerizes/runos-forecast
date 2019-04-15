@@ -10,12 +10,15 @@ class LoadForecastMethod(object):
 
     def run(self):
         for ts in self.storage:
-            sw_algos = [self.algo_class(self.model_class, data[100:], *self.params)
-                        for data in ts.switch_load().values()]
-            for algo in sw_algos:
-                algo.run()
-                algo.print_quality()
-            lm = AggregationAlgorithm(ts, [a.forecast for a in sw_algos], self.params[1])
-            lm.run()
-            lm.print_detection_quality()
-            break
+            try:
+                sw_algos = [self.algo_class(self.model_class, data[100:], *self.params)
+                            for data in ts.switch_load().values()]
+                for algo in sw_algos:
+                    algo.run()
+                    algo.print_quality()
+                lm = AggregationAlgorithm(ts, [a.forecast for a in sw_algos], self.params[1])
+                lm.run()
+                lm.print_detection_quality()
+
+            except Exception:
+                continue
