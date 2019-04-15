@@ -7,8 +7,9 @@ class LoadForecastMethod(object):
 
     def run(self):
         for ts in self.storage:
-            data = ts.load()
-            algo = self.algo_class(self.model_class, data, *self.params)
-            algo.run()
-            algo.print_summary()
+            sw_algos = [self.algo_class(self.model_class, data[100:], *self.params)
+                        for data in ts.switch_load().values()]
+            for algo in sw_algos:
+                algo.run()
+                algo.print_summary()
             break
