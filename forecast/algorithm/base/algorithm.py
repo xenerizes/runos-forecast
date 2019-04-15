@@ -15,6 +15,10 @@ class BaseAlgorithm(object):
         self.history = None
         self.start = 0
         self.end = self.history_len
+        self.summary = None
+
+    def _set_summary(self):
+        self.summary = ExecutionSummary(self.data, self.forecast)
 
     def predict(self, interval):
         return self.model.predict(interval)
@@ -46,10 +50,15 @@ class BaseAlgorithm(object):
     def next(self):
         pass
 
-    def print_summary(self):
-        summary = ExecutionSummary(self.data, self.forecast)
-        display(summary.quality())
-        display(summary.detection_summary())
+    def print_quality(self):
+        if self.summary is None:
+            self._set_summary()
+        display(self.summary.quality())
+
+    def print_detection_quality(self):
+        if self.summary is None:
+            self._set_summary()
+        display(self.summary.detection_summary())
 
     def run(self):
         while self.start != self.end:

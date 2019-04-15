@@ -11,5 +11,5 @@ class LoadForecastMethod(object):
                         for data in ts.switch_load().values()]
             for algo in sw_algos:
                 algo.run()
-                algo.print_summary()
+                algo.print_quality()
             break
