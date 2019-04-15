@@ -1,3 +1,6 @@
+from forecast.algorithm import AggregationAlgorithm
+
+
 class LoadForecastMethod(object):
     def __init__(self, storage, algo_class, model_class, *args):
         self.algo_class = algo_class
@@ -12,4 +15,7 @@ class LoadForecastMethod(object):
             for algo in sw_algos:
                 algo.run()
                 algo.print_quality()
+            lm = AggregationAlgorithm(ts, [a.forecast for a in sw_algos], self.params[1])
+            lm.run()
+            lm.print_detection_quality()
             break
