@@ -63,5 +63,6 @@ class BaseAlgorithm(object):
                     self.fit_model()
                 self.step()
                 self.next()
+                break
             except KeyboardInterrupt:
                 print('Interrupted')
