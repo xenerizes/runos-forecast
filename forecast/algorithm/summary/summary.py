@@ -37,7 +37,7 @@ class ExecutionSummary(object):
             "FP": fps,
             "total": totals
         }
-        index = MultiIndex.from_tuples(index, names=['size', 'interval'])
+        index = MultiIndex.from_tuples(index, names=['board', 'q'])
 
         return DataFrame(data, index=index)
 
@@ -45,15 +45,15 @@ class ExecutionSummary(object):
         bound = size * self.qdiff
         true_overloads = self.actual.overloads(bound)
         predicted_overloads = self.predicted.overloads(bound)
-        detected_overloads = []
+        detected_overloads = 0
         for overload in true_overloads:
             quality_interval = self.predicted.quality_interval(overload, interval)
             if len(quality_interval.overloads(bound)) > 0:
-                detected_overloads.append(overload)
+                detected_overloads += 1
 
-        tp_count = len(detected_overloads)
-        fp_count = len(predicted_overloads) - len(detected_overloads)
-        overload_count = len(true_overloads) + fp_count
+        tp_count = detected_overloads
+        fp_count = abs(len(predicted_overloads) - detected_overloads)
+        overload_count = len(true_overloads)
 
         if overload_count == 0:
             return 0, 0, 0
