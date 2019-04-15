@@ -6,6 +6,7 @@ from pandas import read_csv
 from forecast.algorithm.simple import SimpleAlgorithm
 from forecast.loader.stats import *
 from forecast.models.arima import ARIMAModel
+from forecast.method import LoadForecastMethod
 from scripts.util import make_parser
 
 
@@ -35,10 +36,8 @@ def parse():
     data = load(opts)
     hist_len = 50
     interval = 5
-    for ts in data:
-        to_run = get_ts(ts)
-        run(to_run, interval, hist_len)
-        break
+    method = LoadForecastMethod(data, SimpleAlgorithm, ARIMAModel, interval, hist_len)
+    method.run()
 
 
 if __name__ == '__main__':
