@@ -15,5 +15,5 @@ class LoadModel(Model):
         self.components = components
         self.storage = storage
 
-    def auto(self, order=None):
-        self.model = _compute_ts(self. storage)
+    def predict(self, length):
+        return _compute_ts(self.storage)
