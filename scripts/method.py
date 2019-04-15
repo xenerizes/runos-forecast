@@ -1,6 +1,6 @@
 # !/usr/bin/env python3
 
-from sys import argv
+from sys import argv, warnoptions
 from pandas import read_csv
 
 from forecast.algorithm.simple import SimpleAlgorithm
@@ -14,7 +14,7 @@ def run(data, interval, history_len):
     algorithm = SimpleAlgorithm(ARIMAModel, data, interval, history_len)
 
     algorithm.run()
-    algorithm.print_summary()
+    algorithm.print_quality()
 
 
 def load(opts):
@@ -41,4 +41,7 @@ def parse():
 
 
 if __name__ == '__main__':
+    if not warnoptions:
+        import warnings
+        warnings.simplefilter("ignore")
     parse()
