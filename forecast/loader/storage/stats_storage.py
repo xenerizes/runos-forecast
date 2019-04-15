@@ -7,3 +7,6 @@ class StatsStorage(object):
 
     def load(self):
         pass
+
+    def const_load(self):
+        pass
