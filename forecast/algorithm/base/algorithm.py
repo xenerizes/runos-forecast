@@ -1,3 +1,4 @@
+import logging
 from pandas import Series
 from IPython.display import display
 
@@ -61,17 +62,25 @@ class BaseAlgorithm(object):
         display(self.summary.detection_summary())
 
     def run(self):
+        steps = 0
         while self.start != self.end:
+            steps += 1
+            logging.debug('Performing time step {}...'.format(steps))
             try:
                 self.history = self.data.iloc[self.start:self.end]
                 if self.history.empty:
                     return
                 if self.needs_selection():
+                    logging.debug('Model selection required, calculating...')
                     self.select_model()
                 if self.needs_fitting():
+                    logging.debug('Model fitting required, calculating...')
                     self.fit_model()
+                logging.debug('Updating forecast results...')
                 self.step()
+                logging.debug('Shifting history window...')
                 self.next()
+                logging.debug('Step {} completed\n'.format(steps))
                 break
             except KeyboardInterrupt:
                 print('Interrupted')
