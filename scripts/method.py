@@ -4,7 +4,7 @@ import logging
 from sys import argv, warnoptions
 from pandas import read_csv
 
-from forecast.algorithm.simple import SimpleAlgorithm
+from forecast.algorithm import SimpleAlgorithm, CorrectiveAlgorithm
 from forecast.loader.stats import *
 from forecast.models.arima import ARIMAModel
 from forecast.method import LoadForecastMethod
@@ -30,7 +30,7 @@ def parse():
     parser = make_large_parser()
     opts = parser.parse_args(argv[1:])
     data = load(opts)
-    method = LoadForecastMethod(data, SimpleAlgorithm, ARIMAModel, opts)
+    method = LoadForecastMethod(data, CorrectiveAlgorithm, ARIMAModel, opts)
     method.run()
 
 
@@ -39,5 +39,5 @@ if __name__ == '__main__':
         import warnings
         warnings.simplefilter("ignore")
 
-    logging.basicConfig(format=LOGGING_FORMAT, level='INFO')
+    logging.basicConfig(format=LOGGING_FORMAT, level='DEBUG')
     parse()
