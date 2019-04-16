@@ -1,10 +1,6 @@
-from ml_metrics import mse, ae
+from ml_metrics import mse
 from pandas import Series
-import numpy as np
-
-
-def mape(actual, predicted):
-    return 100 * np.mean(ae(actual, predicted)/actual)
+from .util import mape, ape
 
 
 class ForecastQuality(object):
@@ -18,3 +14,6 @@ class ForecastQuality(object):
         data = [self.mse, self.mape]
         index = ['Mean Squared Error', 'Mean Absolute Percentage Error']
         return Series(data, index=index)
+
+    def ape_series(self):
+        return ape(self.actual, self.fit)

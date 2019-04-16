@@ -60,3 +60,7 @@ class ExecutionSummary(object):
 
         tp_percentage, fp_percentage = tuple(100 * float(count) / overload_count for count in [tp_count, fp_count])
         return tp_percentage, fp_percentage, overload_count
+
+    def ape_series(self):
+        quality = ForecastQuality(self.actual.data, self.predicted.data)
+        return quality.ape_series()

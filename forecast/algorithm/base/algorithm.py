@@ -61,6 +61,11 @@ class BaseAlgorithm(object):
             self._set_summary()
         display(self.summary.detection_summary())
 
+    def quality_stats(self):
+        if self.summary is None:
+            self._set_summary()
+        return self.summary.ape_series()
+
     def run(self):
         steps = 0
         while self.start != self.end:
