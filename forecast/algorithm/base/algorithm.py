@@ -6,13 +6,13 @@ from ..summary import ExecutionSummary
 
 
 class BaseAlgorithm(object):
-    def __init__(self, klass, data, interval, history_len):
+    def __init__(self, klass, data, opts):
         self.data = data
         self.forecast = Series()
         self.model = None
         self.model_class = klass
-        self.interval = interval
-        self.history_len = history_len
+        self.interval = opts.interval
+        self.history_len = opts.hist_len
         self.history = None
         self.start = 0
         self.end = self.history_len

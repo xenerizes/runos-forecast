@@ -3,8 +3,8 @@ from ..models.load import LoadModel
 
 
 class AggregationAlgorithm(BaseAlgorithm):
-    def __init__(self, storage, components, history_len):
-        BaseAlgorithm.__init__(self, LoadModel, storage.load(), 0, history_len)
+    def __init__(self, storage, components, opts):
+        BaseAlgorithm.__init__(self, LoadModel, storage.load(), opts)
         self.model = LoadModel(storage, components)
 
     def step(self):

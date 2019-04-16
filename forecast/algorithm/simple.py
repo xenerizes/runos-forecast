@@ -2,8 +2,8 @@ from .base import BaseAlgorithm
 
 
 class SimpleAlgorithm(BaseAlgorithm):
-    def __init__(self, model_class, data, interval, history_len):
-        BaseAlgorithm.__init__(self, model_class, data, interval, history_len)
+    def __init__(self, model_class, data, opts):
+        BaseAlgorithm.__init__(self, model_class, data, opts)
 
     def select_model(self):
         self.model = self.model_class(self.history)

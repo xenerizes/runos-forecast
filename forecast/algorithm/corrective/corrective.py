@@ -3,9 +3,9 @@ from .model_quality import ModelQuality
 
 
 class CorrectiveAlgorithm(BaseAlgorithm):
-    def __init__(self, model_class, data, interval, history_len, k):
-        BaseAlgorithm.__init__(self, model_class, data, interval, history_len)
-        self.quality = ModelQuality(k)
+    def __init__(self, model_class, data, opts):
+        BaseAlgorithm.__init__(self, model_class, data, opts)
+        self.quality = ModelQuality(opts.k)
 
     def needs_selection(self):
         return self.quality.is_bad()

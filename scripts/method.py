@@ -8,7 +8,7 @@ from forecast.algorithm.simple import SimpleAlgorithm
 from forecast.loader.stats import *
 from forecast.models.arima import ARIMAModel
 from forecast.method import LoadForecastMethod
-from scripts.util import make_parser
+from scripts.util import make_large_parser
 
 LOGGING_FORMAT = '%(levelname)s: %(message)s'
 
@@ -34,12 +34,10 @@ def get_ts(ts):
 
 
 def parse():
-    parser = make_parser()
+    parser = make_large_parser()
     opts = parser.parse_args(argv[1:])
     data = load(opts)
-    hist_len = 50
-    interval = 5
-    method = LoadForecastMethod(data, SimpleAlgorithm, ARIMAModel, interval, hist_len)
+    method = LoadForecastMethod(data, SimpleAlgorithm, ARIMAModel, opts)
     method.run()
 
 
