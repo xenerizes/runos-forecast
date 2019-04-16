@@ -1,5 +1,6 @@
 # !/usr/bin/env python3
 
+import logging
 from sys import argv, warnoptions
 from pandas import read_csv
 
@@ -8,6 +9,8 @@ from forecast.loader.stats import *
 from forecast.models.arima import ARIMAModel
 from forecast.method import LoadForecastMethod
 from scripts.util import make_parser
+
+LOGGING_FORMAT = '%(levelname)s: %(message)s'
 
 
 def run(data, interval, history_len):
@@ -44,4 +47,6 @@ if __name__ == '__main__':
     if not warnoptions:
         import warnings
         warnings.simplefilter("ignore")
+
+    logging.basicConfig(format=LOGGING_FORMAT, level='INFO')
     parse()
