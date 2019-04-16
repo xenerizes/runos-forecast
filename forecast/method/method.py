@@ -14,15 +14,16 @@ class LoadForecastMethod(object):
         for idx, ts in enumerate(self.storage):
             logging.info('Starting forecasting method for DataFrame {}...'.format(idx))
             try:
-                sw_algos = [self.algo_class(self.model_class, data[100:], self.opts)
-                            for data in ts.switch_load().values()]
-                for algo in sw_algos:
+                sw_algos = {sw: self.algo_class(self.model_class, data, self.opts)
+                            for sw, data in ts.switch_load().items()}
+                for sw, algo in sw_algos.items():
+                    logging.info('Forecasting load from switch {}...'.format(sw))
                     algo.run()
                     algo.print_quality()
-                lm = AggregationAlgorithm(ts, [a.forecast for a in sw_algos], self.opts)
+                lm = AggregationAlgorithm(ts, [a.forecast for a in sw_algos.values()], self.opts)
+                logging.info('Forecasting summary load...')
                 lm.run()
-                lm.print_detection_quality()
-
+                lm.print_quality()
             except Exception as e:
                 logging.error('An error occurred while processing DataFrame {}, skipping...'.format(idx))
                 logging.error(str(e))
