@@ -3,7 +3,7 @@ from ml_metrics import ae
 
 
 def ape(actual, predicted):
-    return ae(actual, predicted) / actual
+    return np.abs(ae(actual, predicted) / actual)
 
 
 def mape(actual, predicted):
