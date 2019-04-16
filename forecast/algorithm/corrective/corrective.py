@@ -6,6 +6,7 @@ class CorrectiveAlgorithm(BaseAlgorithm):
     def __init__(self, model_class, data, opts):
         BaseAlgorithm.__init__(self, model_class, data, opts)
         self.quality = ModelQuality(opts.k)
+        self.corr_interval = opts.corr_interval
 
     def needs_selection(self):
         return self.quality.is_bad()
@@ -20,5 +21,5 @@ class CorrectiveAlgorithm(BaseAlgorithm):
         if self.data.size - self.interval < self.end:
             self.start, self.end = 0, 0
         else:
-            interval = self.interval + 1
+            interval = self.interval - self.corr_interval + 1
             self.start, self.end = self.start + interval, self.end + interval
