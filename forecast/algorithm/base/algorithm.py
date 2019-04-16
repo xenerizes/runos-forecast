@@ -1,6 +1,5 @@
 import logging
 from pandas import Series
-from IPython.display import display
 
 from ..summary import ExecutionSummary
 
@@ -54,12 +53,12 @@ class BaseAlgorithm(object):
     def print_quality(self):
         if self.summary is None:
             self._set_summary()
-        display(self.summary.quality())
+        logging.info(self.summary.quality().__str__())
 
     def print_detection_quality(self):
         if self.summary is None:
             self._set_summary()
-        display(self.summary.detection_summary())
+        logging.info(self.summary.detection_summary().__str__())
 
     def quality_stats(self):
         if self.summary is None:
