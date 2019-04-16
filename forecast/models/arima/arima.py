@@ -1,5 +1,6 @@
 from statsmodels.tsa.arima_model import ARIMA
 from statsmodels.tsa.stattools import arma_order_select_ic
+import logging
 
 from ..base.model import Model
 from .util import is_stationary
@@ -39,6 +40,7 @@ class ARIMAModel(Model):
     def auto(self, order=None):
         self.period = self.ts.index[1] - self.ts.index[0]
         self.order = order if order is not None else self.select_order()
+        logging.debug('Model order is {}'.format(self.order))
         self.model = ARIMA(self.ts, order=self.order).fit(disp=False)
 
     def predict(self, length):
