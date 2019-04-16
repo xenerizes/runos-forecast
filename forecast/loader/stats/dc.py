@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 
 from ..storage import StatsStorage
 
@@ -18,7 +19,8 @@ class DcStats(StatsStorage):
         return self.frame['inbits'] + self.frame['outbits']
 
     def const_load(self):
-        return {1: 0, 2: 0}
+        zeros = pd.Series(np.zeros(len(self.frame.index)), index=self.frame.index)
+        return {1: zeros, 2: zeros}
 
 
 class DcStatsHelper(object):
