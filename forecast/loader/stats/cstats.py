@@ -47,3 +47,9 @@ class ControlStats(StatsStorage):
 
     def load(self):
         return self.aggregate()['rx'].astype('float64')
+
+    def const_load(self):
+        sw_map = {int(column[:-2]): None for column in self.columns('pi')}
+        for sw in sw_map.keys():
+            sw_map[sw] = self.frame['{}rx'.format(sw)] - self.frame['{}pi'.format(sw)]
+        return sw_map
