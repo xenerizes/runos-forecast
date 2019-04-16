@@ -1,3 +1,5 @@
+import logging
+
 from forecast.algorithm import AggregationAlgorithm
 
 
@@ -9,7 +11,8 @@ class LoadForecastMethod(object):
         self.storage = storage
 
     def run(self):
-        for ts in self.storage:
+        for idx, ts in enumerate(self.storage):
+            logging.info('Starting forecasting method for DataFrame {}...'.format(idx))
             try:
                 sw_algos = [self.algo_class(self.model_class, data[100:], *self.params)
                             for data in ts.switch_load().values()]
@@ -20,5 +23,7 @@ class LoadForecastMethod(object):
                 lm.run()
                 lm.print_detection_quality()
 
-            except Exception:
+            except Exception as e:
+                logging.error('An error occurred while processing DataFrame {}, skipping...'.format(idx))
+                logging.error(str(e))
                 continue
