@@ -13,13 +13,6 @@ from scripts.util import make_large_parser
 LOGGING_FORMAT = '%(levelname)s: %(message)s'
 
 
-def run(data, interval, history_len):
-    algorithm = SimpleAlgorithm(ARIMAModel, data, interval, history_len)
-
-    algorithm.run()
-    algorithm.print_quality()
-
-
 def load(opts):
     frame = read_csv(opts.file, index_col=[0])
     if opts.dc:
