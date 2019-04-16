@@ -17,6 +17,9 @@ class DcStats(StatsStorage):
     def load(self):
         return self.frame['inbits'] + self.frame['outbits']
 
+    def const_load(self):
+        return {1: 0, 2: 0}
+
 
 class DcStatsHelper(object):
     def __init__(self, frame):
