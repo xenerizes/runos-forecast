@@ -85,6 +85,5 @@ class BaseAlgorithm(object):
                 logging.debug('Shifting history window...')
                 self.next()
                 logging.debug('Step {} completed\n'.format(steps))
-                break
             except KeyboardInterrupt:
                 print('Interrupted')
