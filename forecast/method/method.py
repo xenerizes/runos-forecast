@@ -31,7 +31,7 @@ class LoadForecastMethod(object):
                 algo_quality = {'{}'.format(sw): sw_algos[sw].quality_stats() for sw in sw_algos.keys()}
                 algo_quality['full'] = lm.quality_stats()
                 quality_frame = DataFrame(algo_quality)
-                quality_frame.to_csv('output-ts{}-{}'.format(idx, strftime("%Y-%m-%d.%H:%M", localtime())))
+                quality_frame.to_csv('output-ts{}-{}'.format(idx, strftime("%Y-%m-%d_%H-%M.csv", localtime())))
 
             except Exception as e:
                 logging.error('An error occurred while processing DataFrame {}, skipping...'.format(idx))
