@@ -8,8 +8,8 @@ class SimpleAlgorithm(BaseAlgorithm):
     def select_model(self):
         self.model = self.model_class(self.history)
 
-    def fit_model(self):
-        self.model.auto()
+    def fit_model(self, order=None):
+        self.model.auto(order)
 
     def next(self):
         if self.data.size - self.interval < self.end:

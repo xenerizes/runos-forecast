@@ -7,6 +7,7 @@ class Model(object):
         self.ts = Series(ts.values, index=ts.index, dtype=float64)
         self.period = None
         self.model = None
+        self.order = None
 
     def append(self, date, value):
         pass

@@ -11,7 +11,6 @@ class CorrectiveAlgorithm(BaseAlgorithm):
         BaseAlgorithm.__init__(self, model_class, data, opts)
         self.quality = ModelQuality(opts.k)
         self.correction_interval = opts.corr_interval
-        self.temp_forecast = Series()
         self.prev_forecast = None
         self.step_interval = self.interval - self.correction_interval + 1
 
@@ -24,26 +23,18 @@ class CorrectiveAlgorithm(BaseAlgorithm):
         return self.quality.is_bad()
 
     def select_model(self):
-        self.model = self.model_class(self.history)
         self.quality.clear()
 
-    def fit_model(self):
-        self.model.auto()
+    def fit_model(self, order=None):
+        self.model = self.model_class(self.history)
+        self.model.auto(order)
 
     def step(self):
         predicted = self.predict(self.interval)
-        if self.temp_forecast.empty:
-            self.temp_forecast = predicted
-            return
-
-        final_values = self.temp_forecast[self.correction_interval:]
-        new_values = predicted[-self.correction_interval:]
-        predicted = predicted[:-self.correction_interval]
-
-        self.temp_forecast = predicted
-        self.temp_forecast = self.temp_forecast.append(new_values)
-        self.forecast = self.forecast.append(final_values)
-        self.prev_forecast = final_values
+        if self.correction_interval > 0:
+            self.forecast.drop(self.forecast.index[-self.correction_interval:], inplace=True)
+        self.forecast = self.forecast.append(predicted)
+        self.prev_forecast = predicted
 
     def next(self):
         if self.data.size - self.step_interval < self.end:

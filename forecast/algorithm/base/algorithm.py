@@ -26,7 +26,7 @@ class BaseAlgorithm(object):
     def select_model(self):
         pass
 
-    def fit_model(self):
+    def fit_model(self, order=None):
         pass
 
     def notify_controller(self):
@@ -67,6 +67,7 @@ class BaseAlgorithm(object):
 
     def run(self):
         steps = 0
+        order = None
         while self.start != self.end:
             steps += 1
             logging.debug('Performing time step {}...'.format(steps))
@@ -75,11 +76,12 @@ class BaseAlgorithm(object):
                 if self.history.empty:
                     return
                 if self.needs_selection():
+                    order = self.model.order if self.model is not None else None
                     logging.debug('Model selection required, calculating...')
                     self.select_model()
-                if self.needs_fitting():
-                    logging.debug('Model fitting required, calculating...')
-                    self.fit_model()
+                logging.debug('Model fitting required, calculating...')
+                self.fit_model(order)
+                order = None
                 logging.debug('Updating forecast results...')
                 self.step()
                 logging.debug('Shifting history window...')
