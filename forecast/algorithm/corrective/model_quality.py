@@ -13,8 +13,8 @@ class ModelQuality(object):
         self.metrics = [Metric(func, k) for func in metric_callable_list]
 
     def append(self, actual, predicted):
-        actual_trend = hpfilter(actual, lamb=LAMB)
-        predicted_trend = hpfilter(predicted, lamb=LAMB)
+        _, actual_trend = hpfilter(actual, lamb=LAMB)
+        _, predicted_trend = hpfilter(predicted, lamb=LAMB)
         for metric in self.metrics:
             metric.append(actual_trend, predicted_trend)
 
