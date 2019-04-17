@@ -34,9 +34,10 @@ class LoadForecastMethod(object):
                 algo_quality = {'{}'.format(sw): sw_algos[sw].quality_stats() for sw in sw_algos.keys()}
                 algo_quality['full'] = lm.quality_stats()
                 quality_frame = DataFrame(algo_quality)
-                quality_frame.hist(figsize=(20, 15), grid=True, title=str(idx))
+                quality_frame.hist(figsize=(20, 15), grid=True)
                 plt.savefig('hist-{}-{}.png'.format(idx, strftime(TIME_FORMAT, localtime())),
                             bbox_inches='tight')
+                plt.close()
 
                 lm.data.plot(figsize=(20, 15), grid=True, title=str(idx))
                 lm.forecast.plot(figsize=(20, 15), grid=True, title=str(idx))
