@@ -17,4 +17,4 @@ class Metric(object):
         return max(self.values) / min(self.values)
 
     def is_bad(self):
-        return self.diff() > self.k
+        return self.diff() >= self.k
