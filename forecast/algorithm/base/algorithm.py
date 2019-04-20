@@ -69,7 +69,7 @@ class BaseAlgorithm(object):
         return self.summary.ape_series()
 
     def time_stats(self):
-        return Series(self.time)
+        return self.time
 
     def run(self):
         steps = 0
