@@ -44,13 +44,13 @@ class LoadForecastMethod(object):
                 algo_quality = {'{}'.format(sw): sw_algos[sw].quality_stats() for sw in sw_algos.keys()}
                 algo_quality['full'] = lm.quality_stats()
                 quality_frame = pd.DataFrame(algo_quality)
-                quality_frame.hist(figsize=(20, 15), grid=True, title=str(idx))
+                quality_frame.hist(figsize=(20, 15), grid=True)
                 plt.savefig('hist-{}-{}.png'.format(idx, strftime(TIME_FORMAT, localtime())),
                             bbox_inches='tight')
                 plt.close()
 
-                lm.data.plot(figsize=(20, 15), grid=True, title=str(idx))
-                lm.forecast.plot(figsize=(20, 15), grid=True, title=str(idx))
+                lm.data.plot(figsize=(20, 15), grid=True, title=str(idx), label='actual')
+                lm.forecast.plot(figsize=(20, 15), grid=True, title=str(idx), label='predicted')
                 plt.savefig('figure-{}-{}.png'.format(idx, strftime(TIME_FORMAT, localtime())),
                             bbox_inches='tight')
                 plt.close()
@@ -58,7 +58,7 @@ class LoadForecastMethod(object):
                 time_ts = pd.Series(full_time_data)
                 logging.info('Fitting time information for series {}'.format(idx))
                 print_time_summary(time_ts)
-                time_ts.hist(figsize=(20, 15), grid=True, title=str(idx))
+                time_ts.hist(figsize=(20, 15), grid=True)
                 plt.savefig('time-{}-{}.png'.format(idx, strftime(TIME_FORMAT, localtime())),
                             bbox_inches='tight')
                 plt.close()
