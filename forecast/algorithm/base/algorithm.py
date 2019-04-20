@@ -1,4 +1,6 @@
 import logging
+import time
+
 from pandas import Series
 
 from ..summary import ExecutionSummary
@@ -16,6 +18,7 @@ class BaseAlgorithm(object):
         self.start = 0
         self.end = self.history_len
         self.summary = None
+        self.time = []
 
     def _set_summary(self):
         self.summary = ExecutionSummary(self.data, self.forecast)
@@ -75,12 +78,18 @@ class BaseAlgorithm(object):
                 self.history = self.data.iloc[self.start:self.end]
                 if self.history.empty:
                     return
+                step_time = 0
                 if self.needs_selection():
                     order = self.model.order if self.model is not None else None
                     logging.debug('Model selection required, calculating...')
+                    start_time = time.time()
                     self.select_model()
+                    step_time += time.time() - start_time
                 logging.debug('Model fitting required, calculating...')
+                start_time = time.time()
                 self.fit_model(order)
+                step_time += time.time() - start_time
+                self.time.append(step_time)
                 order = None
                 logging.debug('Updating forecast results...')
                 self.step()
