@@ -24,10 +24,12 @@ class LoadForecastMethod(object):
                 for sw, algo in sw_algos.items():
                     logging.info('Forecasting load from switch {}...'.format(sw))
                     algo.run()
+                    logging.info('Forecast quality for series {}, switch {}:'.format(idx, sw))
                     algo.print_quality()
                 lm = AggregationAlgorithm(ts, [a.forecast for a in sw_algos.values()], self.opts)
                 logging.info('Forecasting summary load...')
                 lm.run()
+                logging.info('Summary quality information for series {}'.format(idx))
                 lm.print_quality()
                 lm.print_detection_quality()
 
