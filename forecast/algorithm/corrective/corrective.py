@@ -1,7 +1,3 @@
-from pandas import Series
-from pandas import DataFrame
-from pandas import concat
-
 from ..base import BaseAlgorithm
 from .model_quality import ModelQuality
 
@@ -18,7 +14,7 @@ class CorrectiveAlgorithm(BaseAlgorithm):
         if self.prev_forecast is None:
             return True
 
-        prev_observed = self.data.iloc[self.end - self.step_interval:self.end]
+        prev_observed = self.data.loc[self.prev_forecast.index]
         self.quality.append(prev_observed, self.prev_forecast)
         return self.quality.is_bad()
 
