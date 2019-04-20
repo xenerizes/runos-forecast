@@ -89,10 +89,15 @@ class BaseAlgorithm(object):
                     self.select_model()
                     step_time += time.time() - start_time
                 logging.debug('Model fitting required, calculating...')
-                start_time = time.time()
-                self.fit_model(order)
-                step_time += time.time() - start_time
-                self.time.append(step_time)
+                try:
+                    start_time = time.time()
+                    self.fit_model(order)
+                    step_time += time.time() - start_time
+                    self.time.append(step_time)
+                except Exception:
+                    logging.warning('Error fitting model. Trying to re-select it')
+                    self.select_model()
+                    self.fit_model()
                 order = None
                 logging.debug('Updating forecast results...')
                 self.step()
