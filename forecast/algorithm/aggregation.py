@@ -11,4 +11,4 @@ class AggregationAlgorithm(BaseAlgorithm):
         pass
     
     def run(self):
-        self.forecast = self.predict(0)[self.history_len:]
+        self.forecast = self.predict(0)
