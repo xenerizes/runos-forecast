@@ -17,7 +17,7 @@ class ARIMAModel(Model):
             fit = ARIMA(endog, order, exog).fit(full_output=False)
             return fit.aic
 
-        bic = arma_order_select_ic(self.ts, max_ar=8, max_ma=6).bic_min_order
+        bic = arma_order_select_ic(self.ts, max_ar=6, max_ma=4).bic_min_order
         grid = (slice(bic[0], bic[0] + 1, 1), slice(1, 2, 1), slice(bic[1], bic[1] + 1, 1))
         from scipy.optimize import brute
         return brute(objfunc, grid, args=(self.ts, None), finish=None)
