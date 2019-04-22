@@ -7,7 +7,7 @@ from .util import is_stationary
 
 
 def _arma_order_selector(ts, ic='bic'):
-    res = arma_order_select_ic(ts, ic=ic)
+    res = arma_order_select_ic(ts, ic=ic, max_ma=4)
     return getattr(res, '{}_min_order'.format(ic))
 
 
