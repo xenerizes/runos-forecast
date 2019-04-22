@@ -6,6 +6,11 @@ from ..base.model import Model
 from .util import is_stationary
 
 
+def _arma_order_selector(ts, ic='bic'):
+    res = arma_order_select_ic(ts, ic=ic)
+    return getattr(res, '{}_min_order'.format(ic))
+
+
 class ARIMAModel(Model):
     def __init__(self, ts):
         Model.__init__(self, ts)
@@ -22,20 +27,23 @@ class ARIMAModel(Model):
         from scipy.optimize import brute
         return brute(objfunc, grid, args=(self.ts, None), finish=None)
 
-    def select_order(self):
+    def _select_order_impl(self, ic):
         if is_stationary(self.ts):
-            bic = arma_order_select_ic(self.ts).bic_min_order
+            bic = _arma_order_selector(self.ts, ic)
             return bic[0], 0, bic[1]
 
         ts1diff = self.ts.diff(periods=1).dropna()
         if is_stationary(ts1diff):
-            bic = arma_order_select_ic(ts1diff).bic_min_order
+            bic = _arma_order_selector(ts1diff, ic)
             return bic[0], 1, bic[1]
 
         ts2diff = self.ts.diff(periods=2).dropna()
-        bic = arma_order_select_ic(ts2diff).bic_min_order
+        bic = _arma_order_selector(ts2diff, ic)
 
         return bic[0], 2, bic[1]
+
+    def select_order(self):
+        return self._select_order_impl('bic')
 
     def auto(self, order=None):
         self.period = self.ts.index[1] - self.ts.index[0]
