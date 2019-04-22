@@ -21,6 +21,12 @@ class Model(object):
     def auto(self, order=None):
         pass
 
+    def select_order(self):
+        pass
+
+    def reselect_order(self):
+        return self.select_order()
+
     def predict(self, length):
         pass
 

@@ -45,6 +45,9 @@ class ARIMAModel(Model):
     def select_order(self):
         return self._select_order_impl('bic')
 
+    def reselect_order(self):
+        return self._select_order_impl('aic')
+
     def auto(self, order=None):
         self.period = self.ts.index[1] - self.ts.index[0]
         self.order = order if order is not None else self.select_order()
