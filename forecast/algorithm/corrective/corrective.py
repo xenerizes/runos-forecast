@@ -27,6 +27,7 @@ class CorrectiveAlgorithm(BaseAlgorithm):
         return self.model.reselect_order()
 
     def fit_model(self, order=None):
+        self.model = self.model_class(self.history)
         self.model.auto(order)
 
     def step(self):
