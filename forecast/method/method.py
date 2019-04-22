@@ -51,7 +51,7 @@ class LoadForecastMethod(object):
                 plt.savefig('figure-{}-{}.png'.format(idx, strftime(TIME_FORMAT, localtime())),
                             bbox_inches='tight')
                 plt.close()
-                break
+
             except Exception as e:
                 logging.error('An error occurred while processing DataFrame {}, skipping...'.format(idx))
                 logging.error(str(e))
