@@ -95,9 +95,15 @@ class BaseAlgorithm(object):
                     step_time += time.time() - start_time
                     self.time.append(step_time)
                 except Exception:
-                    logging.warning('Error fitting model. Trying to re-select it')
-                    self.select_model()
-                    self.fit_model()
+                    try:
+                        logging.warning('Error fitting model. Trying to re-select order')
+                        self.select_model()
+                        self.fit_model()
+                    except Exception:
+                        logging.warning('Error fitting model. Trying to fit with higher d')
+                        p, d, q = self.model.order
+                        order = p, d + 1, q
+                        self.fit_model(order)
                 order = None
                 logging.debug('Updating forecast results...')
                 self.step()
