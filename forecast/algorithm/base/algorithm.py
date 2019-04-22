@@ -29,6 +29,9 @@ class BaseAlgorithm(object):
     def select_model(self):
         pass
 
+    def reselect_model(self):
+        return self.select_model()
+
     def fit_model(self, order=None):
         pass
 
@@ -83,12 +86,11 @@ class BaseAlgorithm(object):
                     return
                 step_time = 0
                 if self.needs_selection():
-                    order = self.model.order if self.model is not None else None
                     logging.debug('Model selection required, calculating...')
                     start_time = time.time()
-                    self.select_model()
+                    order = self.select_model()
                     step_time += time.time() - start_time
-                logging.debug('Model fitting required, calculating...')
+                logging.debug('Model fitting...')
                 try:
                     start_time = time.time()
                     self.fit_model(order)
@@ -97,14 +99,19 @@ class BaseAlgorithm(object):
                 except Exception:
                     try:
                         logging.warning('Error fitting model. Trying to re-select order')
-                        self.select_model()
-                        self.fit_model()
-                    except Exception:
-                        logging.warning('Error fitting model. Trying to fit with higher d')
-                        p, d, q = self.model.order
-                        order = p, d + 1, q
+                        order = self.select_model()
                         self.fit_model(order)
-                order = None
+                    except Exception:
+                        try:
+                            logging.warning('Error fitting model. Trying to fit with higher d')
+                            p, d, q = self.model.order
+                            order = p, d + 1, q
+                            self.fit_model(order)
+                        except Exception:
+                            logging.warning('Error fitting model. Trying to use another IC')
+                            order = self.reselect_model()
+                            self.fit_model(order)
+                order = self.model.order
                 logging.debug('Updating forecast results...')
                 self.step()
                 logging.debug('Shifting history window...')

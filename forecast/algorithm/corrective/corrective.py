@@ -20,9 +20,13 @@ class CorrectiveAlgorithm(BaseAlgorithm):
 
     def select_model(self):
         self.quality.clear()
+        self.model = self.model_class(self.history)
+        return self.model.select_order()
+
+    def reselect_model(self):
+        return self.model.reselect_order()
 
     def fit_model(self, order=None):
-        self.model = self.model_class(self.history)
         self.model.auto(order)
 
     def step(self):

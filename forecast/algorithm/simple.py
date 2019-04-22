@@ -7,6 +7,7 @@ class SimpleAlgorithm(BaseAlgorithm):
 
     def select_model(self):
         self.model = self.model_class(self.history)
+        return self.model.select_order()
 
     def fit_model(self, order=None):
         self.model.auto(order)
