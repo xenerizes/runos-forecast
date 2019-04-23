@@ -7,7 +7,7 @@ from .util import is_stationary
 
 
 def _arma_order_selector(ts, ic='bic'):
-    res = arma_order_select_ic(ts, ic=ic, max_ma=4)
+    res = arma_order_select_ic(ts, ic=ic, max_ma=4, fit_kw={'method': 'css'})
     return getattr(res, '{}_min_order'.format(ic))
 
 
@@ -52,7 +52,7 @@ class ARIMAModel(Model):
         self.period = self.ts.index[1] - self.ts.index[0]
         self.order = order if order is not None else self.select_order()
         logging.debug('Model order is {}'.format(self.order))
-        self.model = ARIMA(self.ts, order=self.order).fit(disp=False)
+        self.model = ARIMA(self.ts, order=self.order).fit(disp=False, method='css')
 
     def predict(self, length):
         start_date = self.model.fittedvalues.index[-1]
