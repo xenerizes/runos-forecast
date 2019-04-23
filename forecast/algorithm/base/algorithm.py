@@ -84,18 +84,13 @@ class BaseAlgorithm(object):
                 self.history = self.data.iloc[self.start:self.end]
                 if self.history.empty:
                     return
-                step_time = 0
+                step_time = time.time()
                 if self.needs_selection():
                     logging.debug('Model selection required, calculating...')
-                    start_time = time.time()
                     order = self.select_model()
-                    step_time += time.time() - start_time
                 logging.debug('Model fitting...')
                 try:
-                    start_time = time.time()
                     self.fit_model(order)
-                    step_time += time.time() - start_time
-                    self.time.append(step_time)
                 except Exception:
                     try:
                         logging.warning('Error fitting model. Trying to re-select order')
@@ -114,6 +109,7 @@ class BaseAlgorithm(object):
                 order = self.model.order
                 logging.debug('Updating forecast results...')
                 self.step()
+                self.time.append(time.time() - step_time)
                 logging.debug('Shifting history window...')
                 self.next()
                 logging.debug('Step {} completed\n'.format(steps))
