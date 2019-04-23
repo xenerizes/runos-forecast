@@ -3,7 +3,8 @@ from ml_metrics import ae
 
 
 def ape(actual, predicted):
-    return np.abs(ae(actual.abs(), predicted.abs()) / actual.abs())
+    maxes = [max(actual[i], predicted[i]) for i in range(len(predicted))]
+    return np.abs(ae(actual, predicted) / maxes)
 
 
 def mape(actual, predicted):
