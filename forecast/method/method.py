@@ -58,7 +58,8 @@ class LoadForecastMethod(object):
                 continue
 
         quality_frame = pd.Series(np.concatenate(quality_array))
-        quality_frame.hist(figsize=(20, 15), grid=True)
+        quality_frame.replace([np.inf, -np.inf], np.nan, inplace=True)
+        quality_frame.dropna().hist(figsize=(20, 15), grid=True)
         plt.savefig('hist-{}.png'.format(strftime(TIME_FORMAT, localtime())), bbox_inches='tight')
         plt.close()
 
