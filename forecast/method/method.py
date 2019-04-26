@@ -13,10 +13,10 @@ def time_str():
     return strftime(TIME_FORMAT, localtime())
 
 
-def print_time_summary(ts):
+def time_summary(ts):
     res = pd.Series([ts.min(), ts.max(), ts.mean(), ts.median()],
                     index=['Min', 'Max', 'Mean', 'Median'])
-    logging.info(res.__str__())
+    return res
 
 
 class LoadForecastMethod(object):
@@ -66,7 +66,9 @@ class LoadForecastMethod(object):
 
         time_ts = pd.Series(full_time_data)
         logging.info('Fitting time information')
-        print_time_summary(time_ts)
+        logging.info(time_summary(time_ts))
+        time_summary(time_ts).to_csv('time-{}.csv'.format(time_str()))
+
         time_ts.hist(figsize=(20, 15), grid=True)
-        plt.savefig('time-{}.png'.format(time_str()), bbox_inches='tight')
+        plt.savefig('time-hist-{}.png'.format(time_str()), bbox_inches='tight')
         plt.close()
