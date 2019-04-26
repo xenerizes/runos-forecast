@@ -39,13 +39,13 @@ class LoadForecastMethod(object):
                     logging.info('Forecasting load from switch {}...'.format(sw))
                     algo.run()
                     full_time_data += algo.time_stats()
-                    quality_array.append(algo.get_quality())
+                    quality_array.append(algo.get_quality().transpose())
 
                 lm = AggregationAlgorithm(ts, [a.forecast for a in sw_algos.values()], self.opts)
                 logging.info('Forecasting summary load...')
                 lm.run()
                 logging.info('Forecasting done for series {}'.format(idx))
-                quality_array.append(lm.get_quality())
+                quality_array.append(lm.get_quality().transpose())
                 overloads.append(lm.get_detection_quality())
 
                 ax = lm.data.plot(figsize=(20, 15), grid=True, title=str(idx), label='actual')
@@ -61,6 +61,8 @@ class LoadForecastMethod(object):
         quality_frame = pd.concat(quality_array)
         quality_frame.replace([np.inf, -np.inf], np.nan, inplace=True)
         quality_frame.dropna(inplace=True)
+        quality_frame['MAPE'].to_csv('mape-{}.csv'.format(time_str()), index=False)
+        quality_frame['MSE'].to_csv('mse-{}.csv'.format(time_str()), index=False)
 
         time_ts = pd.Series(full_time_data)
         logging.info('Fitting time information')
