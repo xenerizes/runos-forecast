@@ -8,7 +8,7 @@ class ForecastQuality(object):
         self.actual = actual
         self.fit = fit
         self.mse = '{:.1f}'.format(mse(self.actual, self.fit))
-        self.mape = '{:.3f}%'.format(mape(self.actual, self.fit))
+        self.mape = '{:.3f}'.format(mape(self.actual, self.fit))
 
     def summary(self):
         data = [self.mse, self.mape]
