@@ -12,7 +12,7 @@ class ForecastQuality(object):
 
     def summary(self):
         data = [self.mse, self.mape]
-        index = ['Mean Squared Error', 'Mean Absolute Percentage Error']
+        index = ['MSE', 'MAPE']
         return Series(data, index=index)
 
     def ape_series(self):
