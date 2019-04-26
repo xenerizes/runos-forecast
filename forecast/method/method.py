@@ -64,6 +64,9 @@ class LoadForecastMethod(object):
         quality_frame['MAPE'].to_csv('mape-{}.csv'.format(time_str()), index=False)
         quality_frame['MSE'].to_csv('mse-{}.csv'.format(time_str()), index=False)
 
+        overloads_frame = pd.concat(overloads)
+        overloads_frame.to_csv('overloads-{}.csv'.format(time_str()))
+
         time_ts = pd.Series(full_time_data)
         logging.info('Fitting time information')
         logging.info(time_summary(time_ts))
