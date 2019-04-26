@@ -56,7 +56,7 @@ class ExecutionSummary(object):
         overload_count = len(true_overloads)
 
         if overload_count == 0:
-            return 0, 0, 0
+            return 100, 0, 0
 
         tp_percentage, fp_percentage = tuple(100 * float(count) / overload_count for count in [tp_count, fp_count])
         return tp_percentage, fp_percentage, overload_count

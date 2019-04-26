@@ -56,15 +56,15 @@ class BaseAlgorithm(object):
     def next(self):
         pass
 
-    def print_quality(self):
+    def get_quality(self):
         if self.summary is None:
             self._set_summary()
-        logging.info(self.summary.quality().__str__())
+        return self.summary.quality()
 
-    def print_detection_quality(self):
+    def get_detection_quality(self):
         if self.summary is None:
             self._set_summary()
-        logging.info(self.summary.detection_summary().__str__())
+        return self.summary.detection_summary()
 
     def quality_stats(self):
         if self.summary is None:
