@@ -9,6 +9,10 @@ from forecast.algorithm import AggregationAlgorithm
 TIME_FORMAT = "%Y-%m-%d_%H-%M"
 
 
+def time_str():
+    return strftime(TIME_FORMAT, localtime())
+
+
 def print_time_summary(ts):
     res = pd.Series([ts.min(), ts.max(), ts.mean(), ts.median()],
                     index=['Min', 'Max', 'Mean', 'Median'])
@@ -46,8 +50,7 @@ class LoadForecastMethod(object):
 
                 ax = lm.data.plot(figsize=(20, 15), grid=True, title=str(idx), label='actual')
                 lm.forecast.plot(ax=ax, grid=True, label='predicted')
-                plt.savefig('figure-{}-{}.png'.format(idx, strftime(TIME_FORMAT, localtime())),
-                            bbox_inches='tight')
+                plt.savefig('figure-{}-{}.png'.format(idx, time_str()), bbox_inches='tight')
                 plt.close()
 
             except Exception as e:
@@ -63,5 +66,5 @@ class LoadForecastMethod(object):
         logging.info('Fitting time information')
         print_time_summary(time_ts)
         time_ts.hist(figsize=(20, 15), grid=True)
-        plt.savefig('time-{}.png'.format(strftime(TIME_FORMAT, localtime())), bbox_inches='tight')
+        plt.savefig('time-{}.png'.format(time_str()), bbox_inches='tight')
         plt.close()
