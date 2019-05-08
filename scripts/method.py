@@ -2,7 +2,7 @@
 
 import logging
 from sys import argv, warnoptions
-from pandas import read_csv
+from pandas import read_csv, date_range
 
 from forecast.algorithm import SimpleAlgorithm, CorrectiveAlgorithm
 from forecast.loader.stats import *
@@ -17,9 +17,12 @@ def load(opts):
     frame = read_csv(opts.file, index_col=[0])
     if opts.dc:
         helper = DcStatsHelper(frame)
-        return [DcStats(f) for f in helper.inf_summary()]
+        return [DcStats(f[:400]) for f in helper.inf_summary()] + \
+               [DcStats(f[-400:]) for f in helper.inf_summary()]
     else:
-        return [ControlStats(frame)]
+        frame = frame.diff().dropna()
+        frame.index = date_range(frame.index[0], periods=len(frame.index), freq='1S')
+        return [ControlStats(frame.resample('5S').sum())]
 
 
 def get_ts(ts):
